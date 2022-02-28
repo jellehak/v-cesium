@@ -1,0 +1,29 @@
+{
+  "name": "v-cesium",
+  "version": "1.0.0",
+  "description": "Cesium components for Vue",
+  "files": ["dist"],
+  "main": "./dist/v-cesium.umd.js",
+  "module": "./dist/v-cesium.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/v-cesium.es.js",
+      "require": "./dist/v-cesium.umd.js"
+    }
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build"
+  },
+  "keywords": ["cesium", "world", "3d"],
+  "author": "Jelle",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^2.8.4",
+    "vite-plugin-vue2": "^1.9.3"
+  },
+  "dependencies": {
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
+  }
+}

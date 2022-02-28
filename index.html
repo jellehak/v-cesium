@@ -1,0 +1,49 @@
+<html>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+  <!-- <link
+    href="https://cesium.com/downloads/cesiumjs/releases/1.90/Build/Cesium/Widgets/widgets.css"
+    rel="stylesheet"
+  /> -->
+
+  <div id="app">
+    <c-viewer>
+      <span style="color: white;">Hello World! <small>Example with a point</small></span>
+
+      <c-object
+        :item="{
+        position: {
+          cartographicDegrees,
+        },
+        point: {
+          color: {
+            rgba: [255, 255, 255, 255],
+          },
+          outlineColor: {
+            rgba: [255, 0, 0, 255],
+          },
+          outlineWidth: 4,
+          pixelSize: 20,
+        },
+      }"
+      ></c-object>
+    </c-viewer>
+  </div>
+
+  <script type="module">
+    import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js";
+    import VCesium from "../index.js";
+
+    Vue.use(VCesium);
+
+    var app = new Vue({
+      el: "#app",
+      data: {
+        cartographicDegrees: [-111.0, 40.0, 0],
+      },
+    });
+  </script>
+</html>

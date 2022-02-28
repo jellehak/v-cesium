@@ -1,0 +1,167 @@
+<html>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+  <link
+    href="https://cesium.com/downloads/cesiumjs/releases/1.90/Build/Cesium/Widgets/widgets.css"
+    rel="stylesheet"
+  />
+
+  <div id="app">
+    <c-viewer width="100vw" height="100vh" @ready="onReady">
+      <!-- <c-point :position="[5.1097,52.0949,0]"></c-point> -->
+
+      <!-- <c-model
+        :height-reference="1"
+        :position="[5.1097,52.0949,0]"
+        :orientation="[]"
+        :scale="1"
+        :model="{
+        uri: 'https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb',
+        gltf: 'https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb',
+        scale: 1.0,
+      }"
+      ></c-model> -->
+      <c-layer :show="form.visible" url="./samples/ne_10m_us_states.topojson"></c-layer>
+
+      <c-object :item="OBJECTS.point"></c-object>
+      <c-object :item="OBJECTS.cylinder"></c-object>
+      <c-object :item="OBJECTS.poly"></c-object>
+
+      <!-- Test visiblity mutation -->
+      <c-object :show="form.visible" :item="OBJECTS.rect1"></c-object>
+      <!-- This would create / recreate the object -->
+      <c-object v-if="form.visible" :item="OBJECTS.rect2"></c-object>
+
+      <div style="background: white">
+        <label>
+          <input type="checkbox" v-model="form.visible" />
+          toggle visibility of some objects
+        </label>
+      </div>
+    </c-viewer>
+  </div>
+
+  <script type="module">
+    import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js";
+    import VCesium from "../index.js";
+
+    Vue.use(VCesium);
+
+    const OBJECTS = {
+      point: {
+        id: "point 1",
+        name: "point",
+        position: {
+          cartographicDegrees: [-111.0, 40.0, 0],
+        },
+        point: {
+          color: {
+            rgba: [255, 255, 255, 255],
+          },
+          outlineColor: {
+            rgba: [255, 0, 0, 255],
+          },
+          outlineWidth: 4,
+          pixelSize: 20,
+        },
+      },
+      cylinder: {
+        id: "shape1",
+        name: "Green cylinder with black outline",
+        position: {
+          cartographicDegrees: [-100.0, 40.0, 200000.0],
+        },
+        cylinder: {
+          length: 400000.0,
+          topRadius: 200000.0,
+          bottomRadius: 200000.0,
+          material: {
+            solidColor: {
+              color: {
+                rgba: [0, 255, 0, 128],
+              },
+            },
+          },
+          outline: true,
+          outlineColor: {
+            rgba: [0, 0, 0, 255],
+          },
+        },
+      },
+      poly: {
+        polyline: {
+          positions: {
+            cartographicDegrees: [-75, 35, 0, -125, 35, 0],
+          },
+          material: {
+            solidColor: {
+              color: {
+                rgba: [255, 0, 0, 255],
+              },
+            },
+          },
+          width: 5,
+          clampToGround: true,
+        },
+      },
+      rect1: {
+        // https://sandcastle.cesium.com/?src=CZML%20Colors.html
+        id: "rgba",
+        name: "Rectangle with outline using RGBA Colors",
+        rectangle: {
+          coordinates: {
+            wsenDegrees: [-120, 40, -110, 50],
+          },
+          fill: true,
+          material: {
+            solidColor: {
+              color: {
+                rgba: [255, 0, 0, 100],
+              },
+            },
+          },
+          height: 0, // disables ground clamping, needed for outlines
+          outline: true,
+          outlineColor: {
+            rgba: [0, 0, 0, 255],
+          },
+        },
+      },
+      rect2: {
+        // https://sandcastle.cesium.com/?src=CZML%20Colors.html
+        name: "Rectangle using RGBAF Colors",
+        rectangle: {
+          coordinates: { wsenDegrees: [-100, 40, -90, 50] },
+          fill: true,
+          material: {
+            solidColor: {
+              color: {
+                rgbaf: [1, 0, 0, 0.39],
+              },
+            },
+          },
+          height: 0,
+          outline: true,
+          outlineColor: {
+            rgba: [0, 0, 0, 255],
+          },
+        },
+      },
+    };
+
+    var app = new Vue({
+      data: {
+        form: {},
+        OBJECTS,
+      },
+      created() {
+        this.onReady = (viewer) => {
+          console.log('Earth ready', viewer)
+        };
+      },
+    }).$mount('#app')
+  </script>
+</html>
